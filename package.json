@@ -1,0 +1,36 @@
+{
+  "name": "mysql-express-sql-queries",
+  "version": "1.0.0",
+  "description": "Express application demonstrating various SQL queries with MySQL - from simple to advanced",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "express",
+    "mysql",
+    "sql",
+    "queries",
+    "joins",
+    "group-by",
+    "having",
+    "docker"
+  ],
+  "author": "ZYRA EduTech",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mysql2": "^3.6.5",
+    "morgan": "^1.10.0",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

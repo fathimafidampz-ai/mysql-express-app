@@ -1,0 +1,142 @@
+# Docker Compose version
+version: '3.8'
+
+# Define services (containers) for the application
+services:
+  
+  # ==========================================
+  # MySQL Database Service
+  # ==========================================
+  mysql:
+    # Use official MySQL 8.0 image
+    image: mysql:8.0
+    
+    # Container name for easy reference
+    container_name: mysql_db
+    
+    # Restart policy - always restart if container stops
+    restart: unless-stopped
+    
+    # Environment variables for MySQL configuration
+    environment:
+      # Root password for MySQL
+      MYSQL_ROOT_PASSWORD: rootpassword
+      # Database to create on first startup
+      MYSQL_DATABASE: school_db
+      # Additional user (optional)
+      MYSQL_USER: appuser
+      # Password for additional user
+      MYSQL_PASSWORD: apppassword
+    
+    # Port mapping: host_port:container_port
+    # MySQL will be accessible on host machine at port 3306
+    ports:
+      - "3306:3306"
+    
+    # Volume mappings for data persistence
+    volumes:
+      # Mount initialization SQL script
+      # Files in /docker-entrypoint-initdb.d/ run automatically on first startup
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      # Persist MySQL data on host machine
+      # This ensures data survives container restarts
+      - mysql_data:/var/lib/mysql
+      # Custom MySQL configuration (optional)
+      - ./mysql-config:/etc/mysql/conf.d
+    
+    # Health check to ensure MySQL is ready
+    healthcheck:
+      # Command to test MySQL connectivity
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      # Time between health checks
+      interval: 10s
+      # Maximum time to wait for health check
+      timeout: 5s
+      # Number of retries before marking as unhealthy
+      retries: 5
+      # Time to wait before starting health checks
+      start_period: 30s
+    
+    # Network configuration
+    networks:
+      - app-network
+  
+  # ==========================================
+  # Express Application Service
+  # ==========================================
+  app:
+    # Build the Docker image from local Dockerfile
+    build:
+      # Build context (current directory)
+      context: .
+      # Path to Dockerfile
+      dockerfile: Dockerfile
+    
+    # Container name
+    container_name: express_app
+    
+    # Restart policy
+    restart: unless-stopped
+    
+    # Environment variables for the application
+    environment:
+      # MySQL connection settings
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: rootpassword
+      DB_NAME: school_db
+      # Application port
+      PORT: 3000
+      # Node environment
+      NODE_ENV: production
+    
+    # Port mapping: host_port:container_port
+    # Application will be accessible on host machine at port 3000
+    ports:
+      - "3000:3000"
+    
+    # Volume mappings
+    volumes:
+      # Mount logs directory to persist logs on host
+      - ./logs:/app/logs
+      # Mount source code for development (optional - comment out for production)
+      # - ./src:/app/src
+    
+    # Service dependencies
+    # Express app won't start until MySQL is healthy
+    depends_on:
+      mysql:
+        # Wait for MySQL to be healthy before starting
+        condition: service_healthy
+    
+    # Network configuration
+    networks:
+      - app-network
+    
+    # Health check for Express application
+    healthcheck:
+      # Test the /health endpoint
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1); })"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+# ==========================================
+# Network Configuration
+# ==========================================
+# Create a custom bridge network for service communication
+networks:
+  app-network:
+    # Bridge driver allows containers to communicate
+    driver: bridge
+
+# ==========================================
+# Volume Configuration
+# ==========================================
+# Named volumes for data persistence
+volumes:
+  # MySQL data volume
+  # Data persists even after containers are removed
+  mysql_data:
+    driver: local

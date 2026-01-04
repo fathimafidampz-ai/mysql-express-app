@@ -1,0 +1,59 @@
+# Custom MySQL Configuration
+# This file contains optimized settings for development
+
+[mysqld]
+# Character set configuration
+character-set-server=utf8mb4
+collation-server=utf8mb4_unicode_ci
+
+# Connection settings
+max_connections=200
+connect_timeout=10
+
+# Query cache (helpful for repeated queries)
+# Note: Query cache is removed in MySQL 8.0+, but kept for reference
+# query_cache_type=1
+# query_cache_size=32M
+
+# Buffer pool size (adjust based on available RAM)
+# For development, 256M is reasonable
+innodb_buffer_pool_size=256M
+
+# Log settings
+# Slow query log (queries taking longer than 2 seconds)
+slow_query_log=1
+long_query_time=2
+slow_query_log_file=/var/log/mysql/slow-query.log
+
+# General query log (optional - logs all queries, use for debugging only)
+# general_log=1
+# general_log_file=/var/log/mysql/general.log
+
+# Binary logging (for replication and point-in-time recovery)
+log_bin=mysql-bin
+expire_logs_days=7
+max_binlog_size=100M
+
+# Performance schema (for query analysis)
+performance_schema=ON
+
+# InnoDB settings
+innodb_flush_log_at_trx_commit=2
+innodb_log_buffer_size=16M
+innodb_log_file_size=128M
+
+# Temporary tables
+tmp_table_size=64M
+max_heap_table_size=64M
+
+# Thread settings
+thread_cache_size=8
+thread_stack=256K
+
+# Timeout settings
+wait_timeout=600
+interactive_timeout=600
+
+# Security
+# Disable LOCAL INFILE for security
+local_infile=0

@@ -1,0 +1,324 @@
+{
+  "info": {
+    "name": "MySQL Express SQL Queries API",
+    "description": "Collection of SQL query examples from simple to advanced",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health & Info",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["health"]
+            }
+          }
+        },
+        {
+          "name": "API Documentation",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": [""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Simple Queries (⭐)",
+      "item": [
+        {
+          "name": "Get Students by Grade",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/students/grade/10",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "students", "grade", "10"]
+            },
+            "description": "Simple SELECT with WHERE clause"
+          }
+        }
+      ]
+    },
+    {
+      "name": "JOIN Queries (⭐⭐)",
+      "item": [
+        {
+          "name": "Student Enrollments (INNER JOIN)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/students/1/enrollments",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "students", "1", "enrollments"]
+            },
+            "description": "INNER JOIN - Students with their course enrollments"
+          }
+        },
+        {
+          "name": "All Students with Enrollments (LEFT JOIN)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/students/all-with-enrollments",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "students", "all-with-enrollments"]
+            },
+            "description": "LEFT JOIN with GROUP BY - All students including those without enrollments"
+          }
+        }
+      ]
+    },
+    {
+      "name": "GROUP BY Queries (⭐⭐)",
+      "item": [
+        {
+          "name": "Students Per Grade",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/analytics/students-per-grade",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "analytics", "students-per-grade"]
+            },
+            "description": "GROUP BY with COUNT aggregate function"
+          }
+        }
+      ]
+    },
+    {
+      "name": "HAVING Queries (⭐⭐⭐)",
+      "item": [
+        {
+          "name": "Popular Courses (min 3 enrollments)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/courses/popular/3",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "courses", "popular", "3"]
+            },
+            "description": "GROUP BY with HAVING clause to filter aggregated results"
+          }
+        },
+        {
+          "name": "Popular Courses (min 5 enrollments)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/courses/popular/5",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "courses", "popular", "5"]
+            },
+            "description": "More restrictive HAVING filter"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Complex Queries (⭐⭐⭐⭐)",
+      "item": [
+        {
+          "name": "Student Performance (All Grades)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/analytics/student-performance?minGPA=3.0",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "analytics", "student-performance"],
+              "query": [
+                {
+                  "key": "minGPA",
+                  "value": "3.0"
+                }
+              ]
+            },
+            "description": "Complex JOIN with WHERE, GROUP BY, and HAVING"
+          }
+        },
+        {
+          "name": "Student Performance (Grade 10 Only)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/analytics/student-performance?minGPA=3.0&grade=10",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "analytics", "student-performance"],
+              "query": [
+                {
+                  "key": "minGPA",
+                  "value": "3.0"
+                },
+                {
+                  "key": "grade",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Student performance filtered by grade level"
+          }
+        },
+        {
+          "name": "Course Details with Analytics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/analytics/course-details/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "analytics", "course-details", "1"]
+            },
+            "description": "Advanced query with CASE statements and multiple JOINs"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Subquery Examples (⭐⭐⭐)",
+      "item": [
+        {
+          "name": "Students in Specific Courses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/students/in-courses?courseIds=1,2,3",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "students", "in-courses"],
+              "query": [
+                {
+                  "key": "courseIds",
+                  "value": "1,2,3",
+                  "description": "Comma-separated course IDs"
+                }
+              ]
+            },
+            "description": "Subquery with WHERE IN clause"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Advanced Analytics (⭐⭐⭐⭐⭐)",
+      "item": [
+        {
+          "name": "Top Performers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/analytics/top-performers?minCourses=3&minGPA=3.5",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "analytics", "top-performers"],
+              "query": [
+                {
+                  "key": "minCourses",
+                  "value": "3",
+                  "description": "Minimum number of courses completed"
+                },
+                {
+                  "key": "minGPA",
+                  "value": "3.5",
+                  "description": "Minimum GPA required"
+                }
+              ]
+            },
+            "description": "Complex aggregation with weighted GPA calculation"
+          }
+        },
+        {
+          "name": "Top Performers (Stricter Criteria)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/analytics/top-performers?minCourses=5&minGPA=3.8",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "analytics", "top-performers"],
+              "query": [
+                {
+                  "key": "minCourses",
+                  "value": "5"
+                },
+                {
+                  "key": "minGPA",
+                  "value": "3.8"
+                }
+              ]
+            },
+            "description": "Very high performers with 5+ courses and 3.8+ GPA"
+          }
+        },
+        {
+          "name": "Department Analytics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/analytics/departments",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "analytics", "departments"]
+            },
+            "description": "Comprehensive department statistics with nested aggregations"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}
